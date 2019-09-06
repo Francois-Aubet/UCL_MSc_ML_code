@@ -11,4 +11,8 @@ In the main repository are many automated testing classes that test and record d
 The code to generate synthetic datasets is in the file generating_G.py .
 
 
+The main.py file contains the instructions to run the models for a single model fitting. All the parameters can be picked in this file.
+
+In the dataset folder we have put a small synthetic dataset on which the different algorithm can be tried.
+
 

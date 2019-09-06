@@ -148,12 +148,6 @@ class IGPFA(Algorithm):
             # run E step:
             self._E_step()
             
-            # get the free energy and print it:
-            # if self._plot_free_energy != 0:
-            #     # F = self._compute_free_energy()
-            #     F = self._compute_free_energy_full()[0]
-            #     #F = self.compute_likelihood()
-            #     self._free_energy_list.append(F)
 
             # run M step:
             self._M_step()
@@ -168,24 +162,8 @@ class IGPFA(Algorithm):
 
             # creating an array of measurements of the orthogonality of C:
             if self._save_ortho_step != -1 and np.mod(epoch, self._save_ortho_step) == 0:
-                # if self.algName == "sv_GPFA" or self.algName == "lr_sv_GPFA":
-                #     free = self._compute_free_energy()
-                #     like = self._compute_likelihood_term()
-                #     kl = self._compute_KL_term()
-
-                #     # free_full, like_full, kl_full = self._algo._compute_free_energy_full()
-
-                #     like_true = self.compute_likelihood()
-
-                #     # print([free, like, kl])
-                #     self._free_tupple_list.append([free, like, kl, like_true, like_true - free]) 
-
-                # angle = get_angle_subspaces(self._meta_data["C_gamma"],self._C_matrix,False)
-                # angle = get_angle_subspaces(self._C_gamma, self._C_alpha)
-                angle = get_angle_subspaces(self._C_gamma[:,:2], self._C_gamma[:,2:])
-                angle = get_orthogonality_score( np.concatenate([self._C_alpha , self._C_gamma ], axis=1) )
-                # print(angle)
-                # print(angle)
+                
+                angle = get_orthogonality_score( self._C_matrix, False )
                 self._angle_list.append(angle) 
 
                 # slightly different for lr_sv_GPFA:
@@ -281,10 +259,6 @@ class IGPFA(Algorithm):
         Smat[:n,:n] = np.diag(S)
         USmat = U.dot(Smat)
 
-        # now we want to perturbate it:
-        # if "C_gamma" in self._meta_data:
-        #     U_o, S_o, V_o = np.linalg.svd(self._meta_data["C_gamma"])
-        #     self._C_matrix = USmat.dot(V_o)
 
 
         # else:
@@ -308,41 +282,7 @@ class IGPFA(Algorithm):
         goal_angle = 40
         theta = np.cos(np.deg2rad(goal_angle))
 
-        # b_3 = None
 
-        # while b_3 is None:
-        #     b_1 = np.random.randn(1)
-        #     b_2 = np.random.randn(1)
-
-        #     b_2_2 = np.square(b_2)
-        #     b_1_2 = np.square(b_1)
-        #     theta = np.square(theta)
-        #     b_comp_a = b_2 - b_2_2 * theta - b_1_2 * theta
-        #     b_comp_d = 2 * b_2_2 * b_1 - b_1_2 * theta
-        #     b_comp_c = b_1_2 * b_2_2 - b_1_2 * b_2_2 * theta - np.square(b_2_2) * theta
-
-        #     det = np.square(b_comp_d) - 4 * b_comp_a * b_comp_c
-        #     if det > 0:
-        #         b_3 = (- b_comp_d + np.sqrt(det) ) / (2 * b_comp_a)
-        #         b_3_1 = (- b_comp_d + np.sqrt(det) ) / (2 * b_comp_a)
-        #         b_3_2 = (- b_comp_d - np.sqrt(det) ) / (2 * b_comp_a)
-        #     else:
-        #         print("problem")
-
-
-        # perturbation_matr_1 = np.squeeze(np.array([ [b_1, b_2] , [b_2, b_3_1] ]))
-        # perturbation_matr_2 = np.squeeze(np.array([ [b_1, b_2] , [b_2, b_3_2] ]))
-        # # print(perturbation_matr, perturbation_matr.shape)
-        # print("perturbation_matr: ", get_orthogonality_score(perturbation_matr_1)[0])
-        # print("perturbation_matr: ", get_orthogonality_score(perturbation_matr_2)[0])
-
-
-        # print("USmat: ", get_orthogonality_score(USmat)[0])
-
-
-        # self._C_matrix = USmat.dot(perturbation_matr)
-        # a = get_orthogonality_score(self._C_matrix, False)[0]
-        # print("self._C_matrix: ", a)
 
         a = get_orthogonality_score(USmat[:,0:2])[0]
         a = get_orthogonality_score(USmat[:,0:2].dot(perturbation_matr))[0]
@@ -362,30 +302,7 @@ class IGPFA(Algorithm):
                     self._C_matrix[:,lat_k2] = rotated[:,1]
 
                     a = get_orthogonality_score(self._C_matrix)[0]
-                    # print("self._C_matrix: ", a)
-            
-            # for lat_k in range(0,self._K_numb_latents-1):
 
-            #     perturbation_matr_k = np.eye(self._K_numb_latents)
-            #     perturbation_matr_k[lat_k:lat_k+2,lat_k:lat_k+2] = perturbation_matr
-
-            #     print("perturbation_matr: ", get_orthogonality_score(perturbation_matr_k, False)[0])
-            #     self._C_matrix = self._C_matrix.dot(perturbation_matr_k)
-            #     a = get_orthogonality_score(self._C_matrix, False)[0]
-            #     print("self._C_matrix: ", a)
-
-
-            # print(a)
-
-        # perturbation_matr = np.array([[0.2,0.4,0.2],[0.4,-0.4,0.2],[0.2,0.2,0.7]])
-        # self._C_matrix = USmat.dot(perturbation_matr)
-
-        # get_orthogonality_score(perturbation_matr)
-        # get_orthogonality_score(USmat)
-        # get_orthogonality_score(USmat.dot(perturbation_matr))
-
-
-        # self._C_matrix = self._meta_data["C_gamma"]
 
 
     

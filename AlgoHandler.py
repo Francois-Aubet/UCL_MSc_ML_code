@@ -997,6 +997,8 @@ class AlgoHandler():
         self._numb_conditions = self._meta_data["numb_conditions"]
         self._trial_conditions = self._meta_data["trial_conditions"]
 
+        self._dataset_is_binned = False
+
 
     def _read_mat_dataset(self,dataset_name):
         """
@@ -1080,67 +1082,3 @@ class AlgoHandler():
 
 
 
-    # def _get_n_norm(self, matrix):
-    #     """
-    #     does stuff
-    #     """
-
-    #     len_1, len_2 = matrix.shape
-
-    #     dot_pro_mat = np.zeros((len_2, len_2))
-
-    #     for i in range(0, len_2):
-    #         for j in range(0, len_2):
-    #             i_v = i if i < 1 else i+1
-    #             j_v = j+1
-    #             dot_pro_mat[i,j] = np.dot(matrix[:,i], matrix[:,j])
-
-    #     det_mat = np.linalg.det(dot_pro_mat)
-
-    #     return np.sqrt(det_mat)
-
-
-    # def _get_angle_subspaces(self, U, V):
-    #     """
-    #     """
-
-    #     U = orth(U)
-    #     V = orth(V)
-
-    #     len_1_u, len_2_u = U.shape
-    #     len_1_v, len_2_v = V.shape
-
-    #     if len_2_u > len_2_v:
-    #         a = U.copy()
-    #         U = V.copy()
-    #         V = a.copy()
-
-    #         len_1_u, len_2_u = U.shape
-    #         len_1_v, len_2_v = V.shape
-
-    #     # normalizing subspaces:
-    #     for i in range(0, len_2_u):
-    #         U[:,i] *= (1 / np.linalg.norm(U[:,i]) )
-    #     for i in range(0, len_2_v):
-    #         V[:,i] *= (1 / np.linalg.norm(V[:,i]) )
-
-
-    #     # get the projection of every vector in U on V:
-    #     proj_U_on_V = np.zeros_like(U)
-
-    #     for i in range(0, len_2_u):
-    #         proj = 0
-    #         for j in range(0, len_2_v):
-    #             proj += V[:,j] * (np.dot(V[:,j], U[:,i]) / np.linalg.norm(V[:,j])**2)
-        
-    #         proj_U_on_V[:,i] = proj
-
-
-    #     n_norm_proj = self._get_n_norm(proj_U_on_V)
-    #     n_norm_U = self._get_n_norm(U)
-
-    #     cos_square_theta = n_norm_proj**2 / (n_norm_U**2 + 1e-14)
-
-    #     theta = np.sqrt(cos_square_theta)
-
-    #     print("angle",np.rad2deg(np.arccos(theta)) )
